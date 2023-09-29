@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package todo.v1;
+
+option go_package = "connectgo/gen/todo/v1;todov1";
+
+message CreateToDoRequest {
+  string toDo = 1;
+}
+
+message ToDoItem {
+  string id = 1;
+  string toDo = 2;
+}
+
+message CreateToDoResponse {
+  repeated ToDoItem toDos = 1;
+}
+
+service ToDoService {
+  rpc CreateToDo(CreateToDoRequest) returns (CreateToDoResponse) {}
+}
