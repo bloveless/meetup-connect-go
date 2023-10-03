@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 // Import service definition that you want to connect to.
@@ -11,11 +11,34 @@ function App() {
   const toDoClient = useClient(ToDoService);
   const [toDos, setToDos] = useState<ToDoItem[]>([]);
 
+  useEffect(() => {
+    toDoClient.getToDos({}).then((toDos) => {
+      setToDos(toDos.toDos);
+    });
+  }, [toDoClient]);
+
+  const handleChangeToDoCompleted = (id: string) => {
+    console.log(`changing id ${id} to completed`);
+    toDoClient.completeToDo({ id }).then((toDos) => {
+      setToDos(toDos.toDos);
+    });
+  };
+
   return (
     <>
       <ol>
         {toDos.map((toDo) => (
-          <li key={toDo.id}>{`${toDo.id}: ${toDo.toDo}`}</li>
+          <li
+            key={toDo.id}
+            style={{ textDecoration: toDo.completed ? "line-through" : "" }}
+          >
+            <input
+              type="checkbox"
+              checked={toDo.completed}
+              onChange={() => handleChangeToDoCompleted(toDo.id)}
+            />
+            {toDo.toDo}
+          </li>
         ))}
       </ol>
       <form
