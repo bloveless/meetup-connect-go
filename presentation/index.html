@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/dracula.css" />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown>
+          <textarea data-template>
+			# What's after REST?
+			### Go APIs overview with gRPC
+			---
+			## Goal
+			The goal of this project/presentation is to show first what it looks like to build APIs with Go.
+			---
+			## Inspiration
+			The most incredible DX I've experienced is tRPC but that requires full stack TypeScript and we want
+			to build with Go! What does tRPC give us that we'd like to model
+
+			1. Static analysis errors when the backend api becomes incompatible with the UI
+			1. Type hints and intellisense for new endpoints/requests/responses as they are being built
+			1. The ability to go to definition of an API endpoint from the UI and jump directly to that
+			   API code
+			---
+			## Why not REST?
+
+			In my opinion, unless you are building an API as a product then REST doesn't give you much.
+			The ideal state of an API is for it to be custom built for building the best UI experiences. This
+			is of course assuming that you are building a BFF type API and not a general purpose API. REST
+			still has it's place.
+			---
+			## APIs in Go
+
+			You can get much more information about this from [Mat Ryer](https://pace.dev/blog/2018/05/09/how-I-write-http-services-after-eight-years.html).
+
+			```go
+			func main() {
+				http.HandleFunc("/", func(w http.RequestWriter, r *http.Request) {
+					fmt.Fprintf(w, "Hello world!")
+					fmt.Println("Endpoint Hit: homepage")
+				})
+
+				log.Fatal(http.ListenAndServer(":3100", nil))
+			}
+			```
+			---
+			## What is gRPC
+
+			A remote procedure call protocol that is supposed to act like calling a function locally
+			but actually is sent to another computer for processing. gRPC is that protocol but uses
+			protocol buffers for the transmission language
+
+			One gotcha... gRPC requires HTTP/2 and isn't compatible with most browsers so we have to
+			use another tool in order to do a translation between HTTP/2 and HTTP/1.1 so we can use
+			it from a react app.
+
+			---
+			## Enough vocab!
+
+			Let's see a demo.
+
+		  </textarea
+          >
+        </section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+    </script>
+  </body>
+</html>
